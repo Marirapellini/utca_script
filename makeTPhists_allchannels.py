@@ -29,6 +29,34 @@ path8 = []
 means_tot = [] ; sigmas_tot = [] ; names_tot = [] ; temperatures_tot = [] 
 modeTP_tot = []
 
+
+def set_parameters(pathAlias):
+    name = ""
+    if pathAlias == "../data_mount/f8a7cd2d-*.hd5":
+        name= "March_31"
+    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
+        name= "April_4"
+    elif pathAlias == "../data_mount/29311fe7-*.hd5":
+        name= "April_6"
+    elif pathAlias == "../data_mount/bdd79791-*.hd5":
+        name='April_22'
+    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
+        name = "June_20"
+
+    temperature = 0
+    if pathAlias == "../data_mount/f8a7cd2d-*.hd5":
+       temperature = -12.95
+    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
+        temperature = -13.75
+    elif pathAlias == "../data_mount/29311fe7-*.hd5":
+        temperature = -14.75
+    elif pathAlias == "../data_mount/bdd79791-*.hd5":
+        temperature = -16
+    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
+        temperature = -9.02
+    
+    return name, temperature
+
 #mapping new channels
 def channelMapping101(channel):
     channel -=1
@@ -75,33 +103,7 @@ def plotorbit(channel, countsLimit, pathAlias):
             break
     #print(data)
 
-    name = ""
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5":
-        name= "March_31"
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        name= "April_4"
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        name= "April_6"
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        name='April_22'
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        name = "June_20"
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        name = "July_26"
-
-    temperature = -15
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5":
-       temperature = -12.95
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        temperature = -13.75
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        temperature = -14.75
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        temperature = -16
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5"  or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        temperature = -9.02
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        temperature = -15
+    name, temperature = set_parameters(pathAlias)
 
     ampl = 0
     mean, TPlocation = makeTPampl(channel, countsLimit, pathAlias)
@@ -148,19 +150,6 @@ def plotorbit(channel, countsLimit, pathAlias):
             plt.title(f'Orbit-channel %s, Temperature: %.2f $^\circ$ C ' % (channel, temperature))
             plt.savefig(f'amplt_{name}_channel{channel}.png')
             plt.close()
-
-
-
-
-    #normal plot for the noise
-    #for row in allData:
-        #plt.plot(row)							# to see how the raw orbits look like
-        #plt.show()
-        #plt.xlim(6000,6500)
-        #plt.title(f'Orbit-channel %s, Temperature: %.2f $^\circ$ C ' % (channel, temperature))
-        #plt.savefig(f"orbit_Date{name}_channel{channel}.png")
-        #plt.close()
-
 
 
 
@@ -312,9 +301,6 @@ def makeBaseline(channel, countsLimit, pathAlias):
     #print(data)
 
     modeTP = findBaseline(allData)
-    print(modeTP)
-    print(np.shape(modeTP))
-    print(channel)
     return(modeTP)
     #n, bins, patches = plt.hist(modeTP, len(np.unique(np.array(modeTP))), facecolor='blue', alpha=0.6)
     #plt.ylim(0,2)
@@ -324,34 +310,8 @@ def makeBaseline(channel, countsLimit, pathAlias):
 #return the baseline values histogram
 def histBaseline(channel, countsLimit, pathAlias):
 
-
-    name = ""
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5" or pathAlias == "../data_mount/764452d9-*.hd5":
-        name= "March_31"
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        name= "April_4"
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        name= "April_6"
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        name = 'April_22'
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        name = "June_20"
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        name = "July_26"
-
-    temperature = -15
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5" or pathAlias == "../data_mount/764452d9-*.hd5":
-       temperature = -12.95
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        temperature = -13.75
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        temperature = -14.75
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        temperature = -16
-    elif pathAlias ==  "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        temperature = -9.02
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        temperature = -15
+    
+    name, temperature = set_parameters(pathAlias)
 
 
     if pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5":
@@ -382,8 +342,6 @@ def histBaseline(channel, countsLimit, pathAlias):
     #print(data)
 
     modeTP = findBaseline(allData)
-    print(modeTP)
-    print(np.shape(modeTP))
 
 
     num_bins = 7
@@ -422,33 +380,7 @@ def appendBaseline(modeTP, path):
 
 #plot the baseline distribution
 def makeTPmodehist(countsLimit, path):
-    name = ""
-    if path == "../data_mount/f8a7cd2d-*.hd5":
-        name= "March_31"
-    elif path == "../data_mount/5b0139d5-*.hd5":
-        name= "April_4"
-    elif path == "../data_mount/29311fe7-*.hd5":
-        name= "April_6"
-    elif path == "../data_mount/bdd79791-*.hd5":
-        name='April_22'
-    elif path == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or path == "../data_mountbis/97941fbd-*.hd5":
-        name = "June_20"
-    elif path == "../data_mountfour/f01fb56a*.hd5":
-        name = "July_26"
-
-    temperature = -15
-    if path == "../data_mount/f8a7cd2d-*.hd5":
-       temperature = -12.95
-    elif path == "../data_mount/5b0139d5-*.hd5":
-        temperature = -13.75
-    elif path == "../data_mount/29311fe7-*.hd5":
-        temperature = -14.75
-    elif path == "../data_mount/bdd79791-*.hd5":
-        temperature = -16
-    elif path == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or path == "../data_mountbis/97941fbd-*.hd5":
-        temperature = -9.02
-    elif path == "../data_mountfour/f01fb56a*.hd5":
-        temperature = -15
+    name, temperature = set_parameters(path)
 
     for channel in allChannels:
         a = makeBaseline(channel, countsLimit , path)
@@ -500,34 +432,7 @@ def makeTPmodehist(countsLimit, path):
 
 #plot the baseline scatter
 def makeTPmodescatter(countsLimit, path):
-    name = ""
-    if path == "../data_mount/f8a7cd2d-*.hd5":
-        name= "March_31"
-    elif path == "../data_mount/5b0139d5-*.hd5":
-        name= "April_4"
-    elif path == "../data_mount/29311fe7-*.hd5":
-        name= "April_6"
-    elif path == "../data_mount/bdd79791-*.hd5":
-        name='April_22'
-    elif path == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or path == "../data_mountbis/97941fbd-*.hd5":
-        name = "June_20"
-    elif path == "../data_mountfour/f01fb56a*.hd5":
-        name = "July_26"
-
-
-    temperature = -15
-    if path == "../data_mount/f8a7cd2d-*.hd5":
-       temperature = -12.95
-    elif path == "../data_mount/5b0139d5-*.hd5":
-        temperature = -13.75
-    elif path == "../data_mount/29311fe7-*.hd5":
-        temperature = -14.75
-    elif path == "../data_mount/bdd79791-*.hd5":
-        temperature = -16
-    elif path == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or path == "../data_mountbis/97941fbd-*.hd5":
-        temperature = -9.02
-    elif path == "../data_mountfour/f01fb56a*.hd5":
-        temperature = -15
+    name, temperature = set_parameters(path)
 
     for channel in allChannels:
         a = makeBaseline(channel, countsLimit , path)
@@ -574,33 +479,7 @@ def makeTPmodescatter(countsLimit, path):
 
 #plot the baseline scatter
 def makeTPmodeerrorscatter(countsLimit, path):
-    name = ""
-    if path == "../data_mount/f8a7cd2d-*.hd5":
-        name= "March_31"
-    elif path == "../data_mount/5b0139d5-*.hd5":
-        name= "April_4"
-    elif path == "../data_mount/29311fe7-*.hd5":
-        name= "April_6"
-    elif path == "../data_mount/bdd79791-*.hd5":
-        name='April_22'
-    elif path == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or path == "../data_mountbis/97941fbd-*.hd5":
-        name = "June_20"
-    elif path == "../data_mountfour/f01fb56a*.hd5":
-        name = "July_26"
-
-    temperature = -15
-    if path == "../data_mount/f8a7cd2d-*.hd5":
-       temperature = -12.95
-    elif path == "../data_mount/5b0139d5-*.hd5":
-        temperature = -13.75
-    elif path == "../data_mount/29311fe7-*.hd5":
-        temperature = -14.75
-    elif path == "../data_mount/bdd79791-*.hd5":
-        temperature = -16
-    elif path == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or path == "../data_mountbis/97941fbd-*.hd5":
-        temperature = -9.02
-    elif path == "../data_mountfour/f01fb56a*.hd5":
-        temperature = -15
+    name, temperature = set_parameters(path)
 
 
     for channel in allChannels:
@@ -835,34 +714,7 @@ def modeTPs(amplTP):
 # plot Test Pulse amplitude histograms per channel, countsLimit sets number of pulses included in the histogram
 def makeTPhists(channel, countsLimit, pathAlias):
 
-    name = ""
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5" or pathAlias == "../data_mount/764452d9-*.hd5":
-        name= "March_31"
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        name= "April_4"
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        name= "April_6"
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        name = 'April_22'
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        name = "June_20"
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        name = "July_26"
-
-    temperature = -15
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5" or pathAlias == "../data_mount/764452d9-*.hd5":
-       temperature = -12.95
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        temperature = -13.75
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        temperature = -14.75
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        temperature = -16
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        temperature = -9.02
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        temperature = -15
-
+    name, temperature = set_parameters(pathAlias)
 
 
     if pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5":
@@ -895,12 +747,7 @@ def makeTPhists(channel, countsLimit, pathAlias):
     (mean, sigma) = norm.fit(amplsTP)
 
     modeTP=modeTPs(amplsTP)
-    print(modeTP)
-   # n, bins, patches = plt.hist(amplsTP, len(np.unique(np.array(amplsTP))), facecolor='blue', alpha=0.6) # , density=True
 
-    # add a 'best fit' line
-    #y = norm.pdf(bins, mean, sigma)
-    #l = plt.plot(bins, y, 'r--', linewidth=2)
 
     print(amplsTP)
 
@@ -923,33 +770,7 @@ def makeTPhists(channel, countsLimit, pathAlias):
 # plot overview of the mean test pulse for range of channels (list as an input), countsLimit sets number of pulses to be considered per channel 
 def makeTPsummary(channels, countsLimit, pathAlias):
 
-    name = ""
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5":
-        name= "March_31"
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        name= "April_4"
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        name= "April_6"
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        name='April_22'
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        name = "June_20"
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        name = "July_26"
-
-    temperature = -15
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5":
-       temperature = -12.95
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        temperature = -13.75
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        temperature = -14.75
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        temperature = -16
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        temperature = -9.02
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        temperature = -15
+    name, temperature = set_parameters(pathAlias)
 
 
     means = []; sigmas = []
@@ -992,34 +813,7 @@ def makeTPsummary(channels, countsLimit, pathAlias):
 # plot overview of the mean test pulse for range of channels (list as an input), countsLimit sets number of pulses to be considered per channel 
 def makeTPerror(channels, countsLimit, pathAlias):
 
-    name = ""
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5":
-        name= "March_31"
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        name= "April_4"
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        name= "April_6"
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        name='April_22'
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        name = "June_20"
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        name = "July_26"
-
-
-    temperature = -15
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5":
-       temperature = -12.95
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        temperature = -13.75
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        temperature = -14.75
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        temperature = -16
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        temperature = -9.02
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        temperature = -15
+    name, temperature = set_parameters(pathAlias)
 
     h5_allNames = glob.glob(pathAlias)
     print(len(h5_allNames), h5_allNames)
@@ -1050,34 +844,7 @@ def makeTPerror(channels, countsLimit, pathAlias):
 
 def makeTPerrorMODE(channels, countsLimit, pathAlias):
 
-    name = ""
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5":
-        name= "March_31"
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        name= "April_4"
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        name= "April_6"
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        name='April_22'
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        name = "June_20"
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        name = "July_26"
-
-
-    temperature = -15
-    if pathAlias == "../data_mount/f8a7cd2d-*.hd5":
-       temperature = -12.95
-    elif pathAlias == "../data_mount/5b0139d5-*.hd5":
-        temperature = -13.75
-    elif pathAlias == "../data_mount/29311fe7-*.hd5":
-        temperature = -14.75
-    elif pathAlias == "../data_mount/bdd79791-*.hd5":
-        temperature = -16
-    elif pathAlias == "../data_mountbis/97941fbd-dd0a-4326-86ba-fe8c731e7f6e_2206231515_0.hd5" or pathAlias == "../data_mountbis/97941fbd-*.hd5":
-        temperature = -9.02
-    elif pathAlias == "../data_mountfour/f01fb56a*.hd5":
-        temperature = -15
+   name, temperature = set_parameters(pathAlias)
 
     h5_allNames = glob.glob(pathAlias)
     print(len(h5_allNames), h5_allNames)
@@ -1119,14 +886,7 @@ def total_append(mean, sigma, name, temperature, channels):
 #plot errorbar for a single temperature  
 def makeTPcomparison(mean, sigma, name, temperature):
     #I need to define the plots of the different
-    print(mean)
-    print(sigma)
-    print(name)
-    print(temperature)
-    print(sigma[0])
-    print(np.shape(sigma))
-    print(np.size(name))
-    print(np.shape(name))
+
     with PdfPages(f'TPhists/TPampl_summary_Date{name}_Temp{temperature}.pdf') as pdf:
         plt.xlabel('Channel')
         plt.ylabel('Amplitude')
@@ -1246,91 +1006,3 @@ dataPathAlias15 = "../data_mountfour/f01fb56a-1930-4da7-b315-568417d6c9ed_220726
 paths = ["../data_mountfour/f01fb56a-1930-4da7-b315-568417d6c9ed_2207260959_0.hd5", "../data_mountfour/f01fb56a-1930-4da7-b315-568417d6c9ed_2207261001_1.hd5" , "../data_mountfour/f01fb56a-1930-4da7-b315-568417d6c9ed_2207261003_2.hd5" ,"../data_mountfour/f01fb56a-1930-4da7-b315-568417d6c9ed_2207261005_3.hd5" ,"../data_mountfour/f01fb56a-1930-4da7-b315-568417d6c9ed_2207261007_4.hd5"]
 
 
-# print(dataPathAlias)
-
-#makeTPmodehist(1,dataPathAlias4)
-
-
-#appendBaseline(x, dataPathAlias6)
-#makeTPampl(1, 150 , dataPathAlias3)
-
-#1,2,7,8,10,13,14,20,27,28,33,37,38,19,34,22,36,46,41,42
-#for i in allChannels:
-   # simpleorbit(i, 1, dataPathAlias8)
-
-#histBaseline(28, 10000, dataPathAlias3)
-
-#makeTPhists( 1, 1 ,dataPathAlias)
-
-#readData(1,dataPathAlias10)
-#makeTPmodehist(1, dataPathAlias2)
-#makeTPmodehist(1, dataPathAlias3)
-
-#makeTPmodeerrorscatter(1, dataPathAlias)
-
-#makeTPampl(1, 1, dataPathAlias7 )
-#makeTPamplsummary()
-
-#for channel in allChannels:
-   # makeBaseline(channel, 230, dataPathAlias)
-
-makeTPamplsummary_July26()
-
-#simpleorbit(43, 1,dataPathAlias8)
-
-#a,b,c,d=makeTPerror(allChannels, 230, dataPathAlias)
-#show(a,b,c,d, allChannels)
-
-#e,f,g,h=makeTPerror(allChannels, 230, dataPathAlias2)
-#show(e,f,g,h, allChannels)
-
-
-#for channel in [1,2]: 
-    #for alias in alldataPathAlias:
-     # makeTPhists(channel,1,alias)
-
-#for channel in allChannels: 
-   # for alias in alldataPathAlias:
-       #makeTPhists(channel,1,alias)
-
-#for channel in [7, 36, 20]:
-   # for alias in alldataPathAlias:
-      #  for count in [1, 130, 230]:
-         #   makeTPhists(channel,count,alias)
-
-# for channel in [7, 36, 20]:
-    # for alias in alldataPathAlias:
-        #for count in [1, 130, 230]: #compareall3ofthem
-           # makeTPhists(channel,count,alias)
-
-
-#for channel in [7, 36, 20]:
-        #for count in [1]: #[ 1, 130, 230]:
-           # makeTPhists(channel,count,dataPathAlias)
-
-#makeTPsummary(allChannels,10,dataPathAlias)
-#makeTPevo([2,7], 10, dataPathAlias)
-
-
-#makeTPsummary(allChannels,10,dataPathAlias)
-
-#for count in [1, 130, 230]: #compareall3ofthem
-   # makeTPsummary(allChannels, count, dataPathAlias)
-
-#onlyforMarch31filerecords
-#for count in [1, 330, 530, 730]: #more than8filestoomuchcost 
-    #makeTPsummary(allChannels, count, dataPathAlias)
-
-# for channel in [7, 36, 20]:
-    # for alias in alldataPathAlias:  
-        #for count in [1, 330, 530, 730]: #more than8filestoomuchcost
-           # makeTPhists(channel,count,alias)    
-
-
-
-# makeTPhists(7,1, dataPathAlias)
-
-#for path in alldataPathAlias:
-    #e,f,g,h = makeTPerror(allChannels, 1, path)
-    #a,b,c,d = total_append(e,f,g,h, allChannels)
-   # makeTPcomparison(a, b, c, d) 
